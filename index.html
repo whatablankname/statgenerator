@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encounter Script</title>
+    <title>Character Generator</title>
     <style>
         body {
             background-color: black;
@@ -31,8 +31,8 @@
     </style>
 </head>
 <body>
-    <h1>Encounter Script</h1>
-    <button onclick="runCode()">Run</button>
+    <h1>Character Generator</h1>
+    <button onclick="runCharacterGenerator()">Generate Character</button>
     <pre id="output"></pre>
 
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
@@ -42,7 +42,7 @@
         }
         loadPyodideAndPackages();
 
-        async function runCode() {
+        async function runCharacterGenerator() {
             // Wait for Pyodide to be ready
             if (typeof pyodide === 'undefined') {
                 document.getElementById('output').textContent = 'Loading Pyodide...';
@@ -52,17 +52,34 @@
             let code = `
 import random
 
-animals = ["shark", "bear", "eagle"]
-places = ["forest", "sea", "clouds"]
+name = str(input('Enter the first name of the character: '))
+lastname = str(input('Enter the last name of the character: '))
+race = str(input('Enter the race of the character (choose from: Human, Elf, Dwarf, Orc, Gnome, Halfling, Goliath, Android, Cyborg, Robot, Fairy, Goblin, Satyr, Minotaur): ')).lower()
 
-random.shuffle(animals)
-random.shuffle(places)
+Intellect = random.randint(1,20)
+Wisdom = random.randint(1,20)
+Health = random.randint(1,20)
+Speed = random.randint(1,20)
+Agility = random.randint(1,20)
+Strength = random.randint(1,20)
+Toughness = random.randint(1,20)
+Endurance = random.randint(1,20)
+Eyesight = random.randint(1,20)
+Hearing = random.randint(1,20)
+Dexterity = random.randint(1,20)
+Charisma = random.randint(1,20)
 
-result = f"You encountered a {animals[0]} in the {places[1]}"
+allowed_races = {"human", "elf", "dwarf", "orc", "gnome", "halfling", "goliath", "android", "cyborg", "robot", "fairy", "goblin", "satyr", "minotaur"}
+
+if race not in allowed_races:
+    result = "Invalid race. Please choose from the provided options."
+else:
+    result = f'Character generated:\\nName: {name} {lastname}\\nRace: {race.title()}\\nIntellect: {Intellect}\\nWisdom: {Wisdom}\\nHealth: {Health}\\nSpeed: {Speed}\\nAgility: {Agility}\\nStrength: {Strength}\\nToughness: {Toughness}\\nEndurance: {Endurance}\\nEyesight: {Eyesight}\\nHearing: {Hearing}\\nDexterity: {Dexterity}\\nCharisma: {Charisma}'
+
 result
             `;
             let outputElement = document.getElementById('output');
-            outputElement.textContent = 'Running...';
+            outputElement.textContent = 'Generating character...';
             try {
                 let result = await pyodide.runPythonAsync(code);
                 outputElement.textContent = result;
