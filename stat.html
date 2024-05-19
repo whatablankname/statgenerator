@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encounter Script</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: monospace;
+            text-align: center;
+        }
+        button {
+            background-color: green;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        pre {
+            white-space: pre-wrap;
+            text-align: left;
+            margin: 20px auto;
+            width: 80%;
+            background-color: black;
+            color: green;
+            border: 1px solid green;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Encounter Script</h1>
+    <button onclick="runCode()">Run</button>
+    <pre id="output"></pre>
+
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script>
+        async function loadPyodideAndPackages() {
+            window.pyodide = await loadPyodide();
+        }
+        loadPyodideAndPackages();
+
+        async function runCode() {
+            // Wait for Pyodide to be ready
+            if (typeof pyodide === 'undefined') {
+                document.getElementById('output').textContent = 'Loading Pyodide...';
+                await loadPyodideAndPackages();
+            }
+            
+            let code = `
+import random
+
+animals = ["shark", "bear", "eagle"]
+places = ["forest", "sea", "clouds"]
+
+random.shuffle(animals)
+random.shuffle(places)
+
+result = f"You encountered a {animals[0]} in the {places[1]}"
+result
+            `;
+            let outputElement = document.getElementById('output');
+            outputElement.textContent = 'Running...';
+            try {
+                let result = await pyodide.runPythonAsync(code);
+                outputElement.textContent = result;
+            } catch (err) {
+                outputElement.textContent = err;
+            }
+        }
+    </script>
+</body>
+</html>
