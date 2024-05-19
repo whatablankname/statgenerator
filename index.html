@@ -49,12 +49,12 @@
                 await loadPyodideAndPackages();
             }
             
+            let name = prompt("Enter the first name of the character:");
+            let lastname = prompt("Enter the last name of the character:");
+            let race = prompt("Enter the race of the character (choose from: Human, Elf, Dwarf, Orc, Gnome, Halfling, Goliath, Android, Cyborg, Robot, Fairy, Goblin, Satyr, Minotaur):").toLowerCase();
+
             let code = `
 import random
-
-name = str(input('Enter the first name of the character: '))
-lastname = str(input('Enter the last name of the character: '))
-race = str(input('Enter the race of the character (choose from: Human, Elf, Dwarf, Orc, Gnome, Halfling, Goliath, Android, Cyborg, Robot, Fairy, Goblin, Satyr, Minotaur): ')).lower()
 
 Intellect = random.randint(1,20)
 Wisdom = random.randint(1,20)
